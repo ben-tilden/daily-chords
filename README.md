@@ -1,3 +1,3 @@
-<h1 align="center">
+<h2 align="center">
   Daily Chords [In Progress]
-</h1>
+</h2>
