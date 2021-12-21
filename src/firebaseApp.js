@@ -1,6 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
 
 // Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -15,8 +13,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// Might be better to export app here and import into separate firebase utils
-// Makes structure more modular and prevents low cohesion exports
-export const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
-export const db = getFirestore(app);
+export default app = initializeApp(firebaseConfig);
+// exporting app here and importing into separate firebase utils
+// makes structure more modular and prevents low cohesion exports
