@@ -13,6 +13,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export default app = initializeApp(firebaseConfig);
+export default initializeApp(firebaseConfig);
 // exporting app here and importing into separate firebase utils
 // makes structure more modular and prevents low cohesion exports
