@@ -5,7 +5,7 @@ dist-ssr
 *.local
 .env
 
-todo.txt
+todo*
 
 .firebase
 .firebaserc

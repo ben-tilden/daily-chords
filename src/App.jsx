@@ -1,19 +1,12 @@
 import './App.css'
-import db from './firebaseDb'
 
-import { collection, query, where, limit, getDocs } from "firebase/firestore";
+import useRandomChord from './chordHooks'
+
 import Chord from '@tombatossals/react-chords/lib/Chord';
-
-import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
 function App() {
 
-  const chordsRef = collection(db, "allChords");
-  const q = query(chordsRef, where("key", "==", "G"), limit(1));
-
-  const [chordData] = useCollectionDataOnce(q);
-
-  console.log(chordData);
+  const chordData = useRandomChord();
 
   const lite = false // defaults to false if omitted
 
