@@ -13,29 +13,34 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {chordData && <Chord
-            chord={
-              {
-                frets: chordData[0].positions,
-                fingers: chordData[0].fingers,
-                barres: chordData[0].barres,
-                capo: chordData[0].capo,
-                baseFret: chordData[0].baseFret
-              }
-            }
-            instrument={
-              {
-                strings: 6,
-                fretsOnChord: chordData[0].highestFret - chordData[0].baseFret + 1,
-                name: 'Guitar',
-                keys: [],
-                tunings: {
-                    standard: ['E', 'A', 'D', 'G', 'B', 'E']
+        {chordData &&
+          <>
+            <div>{chordData[0].key + chordData[0].suffix}</div>
+            <Chord
+                chord={
+                  {
+                    frets: chordData[0].positions,
+                    fingers: chordData[0].fingers,
+                    barres: chordData[0].barres,
+                    capo: chordData[0].capo,
+                    baseFret: chordData[0].baseFret
+                  }
                 }
-              }
-            }
-            lite={lite}
-        />}
+                instrument={
+                  {
+                    strings: 6,
+                    fretsOnChord: chordData[0].highestFret - chordData[0].baseFret + 1,
+                    name: 'Guitar',
+                    keys: [],
+                    tunings: {
+                        standard: ['E', 'A', 'D', 'G', 'B', 'E']
+                    }
+                  }
+                }
+                lite={lite}
+            />
+          </>
+        }
       </header>
     </div>
   )

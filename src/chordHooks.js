@@ -19,6 +19,7 @@ export default function useRandomChord() {
 
     const q = query(chordsRef, where(documentId(), '>=', key.current), limit(1));
     const [chordData] = useCollectionDataOnce(q);
+    console.log(chordData)
     return chordData;
 
 }
