@@ -15,11 +15,12 @@ export default function useRandomChord() {
     // TODO ensure that query does, in fact, a value
     // TODO switch conditional randomly between '>=' and '<='
     // TODO update document ID's in db once picked to reinforce randomness
-    // TODO fix chord rendering issues with higher frets and greater number of frets
+    // TODO fix chord rendering issues with higher frets and greater number of frets (fork react-chords)
 
     const q = query(chordsRef, where(documentId(), '>=', key.current), limit(1));
     const [chordData] = useCollectionDataOnce(q);
     console.log(chordData)
+
     return chordData;
 
 }

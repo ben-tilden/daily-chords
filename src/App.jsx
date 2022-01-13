@@ -29,7 +29,7 @@ function App() {
                 instrument={
                   {
                     strings: 6,
-                    fretsOnChord: chordData[0].highestFret - chordData[0].baseFret + 1,
+                    fretsOnChord: chordData[0].highestFret - chordData[0].baseFret < 4 ? 4 : chordData[0].highestFret,
                     name: 'Guitar',
                     keys: [],
                     tunings: {
