@@ -15,21 +15,21 @@ function App() {
       <header className="App-header">
         {chordData &&
           <>
-            <div>{chordData[0].key + chordData[0].suffix}</div>
+            <div>{chordData.key + chordData.suffix}</div>
             <Chord
                 chord={
                   {
-                    frets: chordData[0].positions,
-                    fingers: chordData[0].fingers,
-                    barres: chordData[0].barres,
-                    capo: chordData[0].capo,
-                    baseFret: chordData[0].baseFret
+                    frets: chordData.positions,
+                    fingers: chordData.fingers,
+                    barres: chordData.barres,
+                    capo: chordData.capo,
+                    baseFret: chordData.baseFret
                   }
                 }
                 instrument={
                   {
                     strings: 6,
-                    fretsOnChord: chordData[0].highestFret - chordData[0].baseFret < 4 ? 4 : chordData[0].highestFret,
+                    fretsOnChord: chordData.highestFret - chordData.baseFret < 4 ? 4 : chordData.highestFret,
                     name: 'Guitar',
                     keys: [],
                     tunings: {
