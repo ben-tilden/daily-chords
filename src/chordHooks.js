@@ -14,28 +14,35 @@ export default function useRandomChord() {
 
     const chordsRef = collection(db, 'allChords');
     const key = useRef(doc(chordsRef).id);
+    const q = query(chordsRef, where(documentId(), '>=', key.current), limit(1));
 
-    const [chordData, setChordData] = useState();
+    const [chordData] = useFirestoreQuery(q);
 
-    // TODO confirm current useEffect, useState, and useRef logic
-    // TODO remove react firebase hooks dependency
+    return chordData;
+
     // TODO ensure that query does, in fact, provide a value (useReducer?)
     // TODO switch conditional randomly between '>=' and '<=' (useReducer?)
     // TODO update document ID's in db once picked to reinforce randomness
     // TODO fix chord rendering issues with higher frets and greater number of frets (fork react-chords)
 
-    useEffect(() => {
-    const func = async () => {
-        const q = query(chordsRef, where(documentId(), '>=', key.current), limit(1));
-        const querySnapshot = await getDocs(q);
-        const data = querySnapshot.docs.map((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        return doc.data();
-        });
-        setChordData(data[0]);
-    }
-    func();
-    }, [key.current])
+}
 
-    return chordData;
+export function useFirestoreQuery(query) {
+
+    const [chordData, setChordData] = useState([]);
+
+    useEffect(() => {
+        const retrieveChord = async () => {
+            const querySnapshot = await getDocs(query);
+            const data = querySnapshot.docs.map((doc) => {
+                console.log(doc.id, " => ", doc.data());
+                return doc.data();
+            });
+            setChordData(data);
+        }
+        retrieveChord();
+    }, [])
+
+    return chordData; // TODO investigate what this return value is if nothing found
+
 }
