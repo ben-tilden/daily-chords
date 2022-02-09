@@ -34,14 +34,13 @@ export default function useRandomChord() {
     const comparatorRef = useRef(queryComparator);
     const comparatorBackupRef = useRef(queryComparatorBackup);
 
-    const initialQuery = query(allChords, where(documentId(), '==', key.current), limit(1));
+    const initialQuery = query(allChords, where(documentId(), comparatorRef.current, key.current), limit(1));
     const backupQuery = query(allChords, where(documentId(), comparatorBackupRef.current, key.current), limit(1));
 
     useEffect(() => {
         const retrieveChord = async () => {
             try {
                 let snapshot = await getDocs(initialQuery);
-                console.log(typeof(snapshot));
                 if (snapshot.empty) {
                     snapshot = await getDocs(backupQuery);
                 }
@@ -57,5 +56,7 @@ export default function useRandomChord() {
     return state;
 
     // TODO update document ID's in db once picked to reinforce randomness
+    // TODO push document data to the history db
+
 
 }
