@@ -1,20 +1,19 @@
-import './App.css'
-import db from './firebaseDb'
+import './App.css';
+import db from './firebaseDb';
+import { getDailyChord, getRandomChordFromId } from './helpers'
 
-import { useRef, useEffect, useReducer } from 'react';
-import { collection, query, where, limit, doc, documentId, getDocs } from 'firebase/firestore';
+import { useEffect, useReducer } from 'react';
+import { collection, updateDoc, doc, Timestamp } from 'firebase/firestore';
 
 // Reducer for hook state and actions
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'loading':
-            return { status: 'loading', data: undefined, error: undefined };
         case 'success':
-            return { status: 'success', data: action.payload, error: undefined };
+            return { status: action.type, data: action.payload, error: undefined };
         case 'error':
-            return { status: 'error', data: undefined, error: action.payload };
+            return { status: action.type, data: undefined, error: action.payload };
         default:
-            throw new Error('invalid action');
+            throw new Error('Invalid Action');
     }
 };
 
@@ -26,37 +25,36 @@ export default function useRandomChord() {
     };
 
     const [state, dispatch] = useReducer(reducer, initialState);
-    const allChords = collection(db, 'allChords');
-
-    const key = useRef(doc(allChords).id);
-
-    const [queryComparator, queryComparatorBackup] = Math.random() < 0.5 ? ['>=','<='] : ['<=','>='];
-    const comparatorRef = useRef(queryComparator);
-    const comparatorBackupRef = useRef(queryComparatorBackup);
-
-    const initialQuery = query(allChords, where(documentId(), comparatorRef.current, key.current), limit(1));
-    const backupQuery = query(allChords, where(documentId(), comparatorBackupRef.current, key.current), limit(1));
 
     useEffect(() => {
-        const retrieveChord = async () => {
+        const runFirestoreStateLogic = async () => {
+            const allChordsRef = collection(db, 'allChords');
+            const currentDate = new Date();
+            currentDate.setHours(0,0,0,0);
+            const randomId = doc(allChordsRef).id;
+
             try {
-                let snapshot = await getDocs(initialQuery);
-                if (snapshot.empty) {
-                    snapshot = await getDocs(backupQuery);
+                const dailyChordDoc = await getDailyChord(currentDate, allChordsRef);
+                if (dailyChordDoc) {
+                    dispatch({ type: 'success', payload: dailyChordDoc.data() });
+                } else {
+                    const randomChordDoc = await getRandomChordFromId(randomId, allChordsRef);
+                    if (!randomChordDoc) {
+                        throw 'No chord found';
+                    }
+                    await updateDoc(randomChordDoc.ref, {
+                        randomId: randomId,
+                        dates: [...randomChordDoc.data().dates, Timestamp.fromDate(currentDate)],
+                    });
+                    dispatch({ type: 'success', payload: randomChordDoc.data() });
                 }
-                const data = snapshot.docs.map((doc) => doc.data());
-                dispatch({ type: 'success', payload: data[0] });
             } catch (error) {
                 dispatch({ type: 'error', payload: error });
             }
         }
-        retrieveChord();
+
+        runFirestoreStateLogic();
     }, [])
 
     return state;
-
-    // TODO update document ID's in db once picked to reinforce randomness
-    // TODO push document data to the history db
-
-
 }

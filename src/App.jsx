@@ -1,6 +1,6 @@
-import './App.css'
+import './App.css';
 
-import useRandomChord from './chordHooks'
+import useRandomChord from './chordHooks';
 
 import Chord from '@tombatossals/react-chords/lib/Chord';
 
@@ -8,9 +8,7 @@ function App() {
 
   const chordData = useRandomChord();
 
-  console.log(chordData);
-
-  const lite = false // defaults to false if omitted
+  const lite = false; // defaults to false if omitted
 
   return (
     <div className="App">
