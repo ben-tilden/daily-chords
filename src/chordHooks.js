@@ -42,9 +42,12 @@ export default function useRandomChord() {
                     if (!randomChordDoc) {
                         throw 'No chord found';
                     }
+                    // convert to UTC to ensure consistency in security rules
+                    const currentDateUtc = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(),
+                        currentDate.getUTCDate(), 0, 0, 0));
                     await updateDoc(randomChordDoc.ref, {
                         randomId: randomId,
-                        dates: [...randomChordDoc.data().dates, Timestamp.fromDate(currentDate)],
+                        dates: [...randomChordDoc.data().dates, Timestamp.fromDate(currentDateUtc)],
                     });
                     dispatch({ type: 'success', payload: randomChordDoc.data() });
                 }

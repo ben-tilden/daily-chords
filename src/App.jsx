@@ -8,6 +8,8 @@ function App() {
 
   const chordData = useRandomChord();
 
+  console.log(chordData);
+
   const lite = false; // defaults to false if omitted
 
   return (
