@@ -29,8 +29,7 @@ export default function useRandomChord() {
     useEffect(() => {
         const runFirestoreStateLogic = async () => {
             const allChordsRef = collection(db, 'allChords');
-            const currentDate = new Date();
-            currentDate.setHours(0,0,0,0);
+            const currentDate = new Date().setHours(0,0,0,0);
             const randomId = doc(allChordsRef).id;
 
             try {
@@ -42,12 +41,9 @@ export default function useRandomChord() {
                     if (!randomChordDoc) {
                         throw 'No chord found';
                     }
-                    // convert to UTC to ensure consistency in security rules
-                    const currentDateUtc = new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth(),
-                        currentDate.getUTCDate(), 0, 0, 0));
                     await updateDoc(randomChordDoc.ref, {
                         randomId: randomId,
-                        dates: [...randomChordDoc.data().dates, Timestamp.fromDate(currentDateUtc)],
+                        dates: [...randomChordDoc.data().dates, Timestamp.fromMillis(currentDate)],
                     });
                     dispatch({ type: 'success', payload: randomChordDoc.data() });
                 }

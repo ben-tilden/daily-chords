@@ -1,7 +1,7 @@
 import { query, where, limit, getDocs, Timestamp } from 'firebase/firestore';
 
 export const getDailyChord = async (date, dbRef) => {
-    const isDailyChord = query(dbRef, where('dates', 'array-contains', Timestamp.fromDate(date)), limit(1));
+    const isDailyChord = query(dbRef, where('dates', 'array-contains', Timestamp.fromMillis(date)));
     const dailyChordSnapshot = await getDocs(isDailyChord);
     return dailyChordSnapshot.docs[0];
 }
