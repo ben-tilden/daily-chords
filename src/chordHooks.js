@@ -17,7 +17,7 @@ const reducer = (state, action) => {
     }
 };
 
-export default function useRandomChord() {
+export default function useRandomChord(date) {
     const initialState = {
         status: 'loading',
         data: undefined,
@@ -29,11 +29,10 @@ export default function useRandomChord() {
     useEffect(() => {
         const runFirestoreStateLogic = async () => {
             const allChordsRef = collection(db, 'allChords');
-            const currentDate = new Date().setHours(0,0,0,0);
             const randomId = doc(allChordsRef).id;
 
             try {
-                const dailyChordDoc = await getDailyChord(currentDate, allChordsRef);
+                const dailyChordDoc = await getDailyChord(date, allChordsRef);
                 if (dailyChordDoc) {
                     dispatch({ type: 'success', payload: dailyChordDoc.data() });
                 } else {
@@ -43,7 +42,7 @@ export default function useRandomChord() {
                     }
                     await updateDoc(randomChordDoc.ref, {
                         randomId: randomId,
-                        dates: [...randomChordDoc.data().dates, Timestamp.fromMillis(currentDate)],
+                        dates: [...randomChordDoc.data().dates, Timestamp.fromMillis(date)],
                     });
                     dispatch({ type: 'success', payload: randomChordDoc.data() });
                 }

@@ -1,14 +1,12 @@
 .App {
   text-align: center;
-}
-
-.App-header {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(60px + 2vmin);
-  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.App-header {
+  font-size: calc(50px + 2vmin);
   color: #444;
+  padding: 2.5rem 0 1rem 0;
 }
